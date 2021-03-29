@@ -1,0 +1,30 @@
+class Api::PostsController < ApplicationController
+
+  def index
+    posts = (current_user.posts +
+      current_user.confirmed_friends.map{ |f| f.posts }.flatten)
+      .sort_by(&:created_at).reverse
+    render json: posts.as_json(:methods => [:comments_count, :likes_count])
+  end
+
+  def create
+    post = Post.create(post_params, user_id: current_user)
+  end
+
+  def update
+    post = Post.find(params[:id])
+    post.update(post_params)
+  end
+
+  def destroy
+    post = Post.find(params[:id])
+    post.destroy
+  end
+
+  private
+
+  def post_params
+    params.require(:post).permit(:content)
+  end
+
+end

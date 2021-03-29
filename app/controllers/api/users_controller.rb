@@ -1,8 +1,29 @@
 class Api::UsersController < ApplicationController
 
   def index
-    @users = User.all
-    render json: @users
+    confirmed = User.find(current_user).confirmed_friends
+    pending = User.find(current_user).pending_friends
+    proposed = User.find(current_user).proposed_friends
+    possible = User.find(current_user).possible_friends
+    render json: {
+      :confirmed => confirmed.as_json(:include => {:profile => {
+                                                  :only => [:first_name, :last_name]}}),
+      :pending   => pending.as_json(:include   => {:profile => {
+                                                  :only => [:first_name, :last_name]}}),
+      :proposed  => proposed.as_json(:include  => {:profile => {
+                                                  :only => [:first_name, :last_name]}}),
+      :possible  => possible.as_json(:include  => {:profile => {
+                                                  :only => [:first_name, :last_name]}})
+      }
+  end
+
+  def show
+    user = User.find(params[:id])
+    posts = user.posts.sort_by(&:created_at)
+    render json: {
+      profile: user.profile.as_json(:only => [:first_name, :last_name]),
+      posts: posts.as_json(:methods => [:comments_count, :likes_count])
+      }
   end
 
 end
