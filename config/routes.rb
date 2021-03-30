@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
-  # devise_for :users, only: [:sessions], controllers: {sessions: 'users/sessions'}
+  devise_for :users, 
+    path: 'api', 
+    path_names: {
+      sign_in: 'login',
+      sign_out: 'logout',
+      registration: 'signup'
+    },
+    controllers: {
+      sessions: 'api/sessions',
+      registrations: 'api/registrations'
+    }
 
   namespace :api, constraints: { format: 'json' } do
     resources :users, only: [:index, :show]
@@ -8,5 +18,5 @@ Rails.application.routes.draw do
     resources :profiles, only: [:show, :update]
     resources :comments, only: [:index, :create, :update, :destroy]
     resources :friendships, only: [:create, :update, :destroy]
-  end  
+  end
 end

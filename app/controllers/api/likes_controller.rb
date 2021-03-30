@@ -1,4 +1,5 @@
 class Api::LikesController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     likes = Post.find(params[:id]).likes

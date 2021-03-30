@@ -1,4 +1,5 @@
 class Api::CommentsController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     post = Post.find(comment_params[:post_id])

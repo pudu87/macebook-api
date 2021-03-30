@@ -1,4 +1,5 @@
 class Api::UsersController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     confirmed = User.find(current_user).confirmed_friends
