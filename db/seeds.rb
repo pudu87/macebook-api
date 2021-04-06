@@ -71,9 +71,13 @@ end
 
 profiles_list = [
   [1, 'Rocky', 'Peeters', Date.parse('18-08-1979'), 'M', 'Herentals'],
-  [2, 'Ivan', 'Perisic', Date.parse('02-02-1989'), 'M', 'Munchen']
+  [2, 'Ivan', 'Perisic', Date.parse('02-02-1989'), 'M', 'Munchen'],
+  [3, 'Wagneau', 'Eloi', '', '', ''],
+  [4, 'Damir', 'Mirvic', '', '', ''],
+  [5, 'Mama', 'Dissa', '', '', ''],
+  [6, 'Jurgen', 'Sierens', '', '', '']
 ]
 
 profiles_list.each do |u,fn,ln,bd,s,l|
-  Profile.update(user_id: u, first_name: fn, last_name: ln, birthdate: bd, sex: s, location: l)
+  User.find(u).profile.update(first_name: fn, last_name: ln, birthdate: bd, sex: s, location: l)
 end
