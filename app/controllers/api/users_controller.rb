@@ -20,11 +20,7 @@ class Api::UsersController < ApplicationController
 
   def show
     user = User.find(params[:id])
-    posts = user.posts.sort_by(&:created_at)
-    render json: {
-      profile: user.profile.as_json(:only => [:first_name, :last_name]),
-      posts: posts.as_json(:methods => [:comments_count, :likes_count])
-      }
+    render json: user.profile.as_json(:only => [:first_name, :last_name])
   end
 
 end

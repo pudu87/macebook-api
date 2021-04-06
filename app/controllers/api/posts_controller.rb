@@ -13,6 +13,12 @@ class Api::PostsController < ApplicationController
     post.save
   end
 
+  def show
+    user = User.find(params[:id])
+    posts = user.posts.sort_by(&:created_at)
+    render json: posts.as_json(:methods => [:comments_count, :likes_count])
+  end
+
   def update
     post = Post.find(params[:id])
     post.update(post_params)

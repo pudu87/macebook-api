@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   namespace :api, constraints: { format: 'json' } do
     resources :users, only: [:index, :show]
-    resources :posts, only: [:index, :create, :update, :destroy]
+    resources :posts, only: [:index, :create, :show, :update, :destroy]
     resources :likes, only: [:index, :create, :destroy]
     resources :profiles, only: [:show, :update]
     resources :comments, only: [:create, :show, :update, :destroy]
