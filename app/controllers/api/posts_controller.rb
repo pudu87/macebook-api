@@ -9,7 +9,8 @@ class Api::PostsController < ApplicationController
   end
 
   def create
-    post = Post.create(post_params, user_id: current_user)
+    post = current_user.posts.build(post_params)
+    post.save
   end
 
   def update

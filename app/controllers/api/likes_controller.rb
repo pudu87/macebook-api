@@ -10,7 +10,8 @@ class Api::LikesController < ApplicationController
   end
 
   def create
-    like = Like.create(like_params, user_id: current_user)
+    like = current_user.likes.build(like_params)
+    like.save
   end
 
   def destroy
@@ -19,7 +20,7 @@ class Api::LikesController < ApplicationController
   end
 
   private
-  
+
   def like_params
     params.require(:like).permit(:post_id)
   end

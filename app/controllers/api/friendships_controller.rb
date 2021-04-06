@@ -3,7 +3,11 @@ class Api::FriendshipsController < ApplicationController
 
   def create
     friend = User.find(params[:friend_id])
-    friendship = Friendship.new(user_id: current_user.id, friend_id: friend.id, accepted: false)
+    friendship = Friendship.new(
+      user_id: current_user.id, 
+      friend_id: friend.id, 
+      accepted: false
+    )
     friendship.save
   end
 

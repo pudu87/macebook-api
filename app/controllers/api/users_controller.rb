@@ -2,10 +2,10 @@ class Api::UsersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    confirmed = User.find(current_user).confirmed_friends
-    pending = User.find(current_user).pending_friends
-    proposed = User.find(current_user).proposed_friends
-    possible = User.find(current_user).possible_friends
+    confirmed = current_user.confirmed_friends
+    pending = current_user.pending_friends
+    proposed = current_user.proposed_friends
+    possible = current_user.possible_friends
     render json: {
       :confirmed => confirmed.as_json(:include => {:profile => {
                                                   :only => [:first_name, :last_name]}}),

@@ -1,19 +1,20 @@
 class Api::CommentsController < ApplicationController
   before_action :authenticate_user!
 
-  def index
-    post = Post.find(comment_params[:post_id])
+  def create
+    comment = current_user.comments.build(comment_params)
+    comment.save
+  end
+
+  def show
+    post = Post.find(params[:id])
     comments = post.comments.sort_by(&:created_at)
     render json: comments
   end
 
-  def create
-    comment = Comment.create(comment_params, user_id: current_user)
-  end
-
   def update
     comment = Comment.find(params[:id])
-    comment.update(post_params)
+    comment.update(comment_params)
   end
 
   def destroy
@@ -24,7 +25,7 @@ class Api::CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:content, post_id)
+    params.require(:comment).permit(:content, :post_id)
   end
 
 end
