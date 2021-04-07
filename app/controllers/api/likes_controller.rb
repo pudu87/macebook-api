@@ -3,10 +3,9 @@ class Api::LikesController < ApplicationController
 
   def index
     likes = Post.find(params[:id]).likes
-    render json: likes.as_json(:include => {:user => {
-                                  :include => {:profile => {
-                                               :only => [:first_name, :last_name]}}, 
-                                             :only => []}})
+    render json: likes.as_json(
+      :include => {:profile => {:only => [:first_name, :last_name]}}
+    )
   end
 
   def create

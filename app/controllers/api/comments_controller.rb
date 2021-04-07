@@ -9,7 +9,9 @@ class Api::CommentsController < ApplicationController
   def show
     post = Post.find(params[:id])
     comments = post.comments.sort_by(&:created_at)
-    render json: comments
+    render json: comments.as_json(
+      :include => {:profile => {:only => [:first_name, :last_name]}}
+    )
   end
 
   def update
