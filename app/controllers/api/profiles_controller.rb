@@ -2,12 +2,12 @@ class Api::ProfilesController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    profile = Profile.find_by_user_id(current_user.id)
+    profile = Profile.find_by_user_id(params[:id])
     render json: profile
   end
 
   def update
-    profile = Profile.find_by_user_id(current_user.id)
+    profile = Profile.find_by_user_id(params[:id])
     profile.update(profile_params)
     render json: profile
   end
