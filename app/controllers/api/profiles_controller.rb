@@ -9,6 +9,7 @@ class Api::ProfilesController < ApplicationController
   def update
     profile = Profile.find_by_user_id(current_user.id)
     profile.update(profile_params)
+    render json: profile
   end
 
   private

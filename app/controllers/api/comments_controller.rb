@@ -4,19 +4,19 @@ class Api::CommentsController < ApplicationController
   def create
     comment = current_user.comments.build(comment_params)
     comment.save
+    render json: comment
   end
 
   def show
     post = Post.find(params[:id])
     comments = post.comments.sort_by(&:created_at)
-    render json: comments.as_json(
-      :include => {:profile => {:only => [:first_name, :last_name]}}
-    )
+    render json: comments
   end
 
   def update
     comment = Comment.find(params[:id])
     comment.update(comment_params)
+    render json: comment
   end
 
   def destroy

@@ -5,29 +5,25 @@ class Api::PostsController < ApplicationController
     posts = (current_user.posts +
       current_user.confirmed_friends.map{ |f| f.posts }.flatten)
       .sort_by(&:created_at).reverse
-    render json: posts.as_json(
-      :include => {:profile => {:only => [:first_name, :last_name]}},
-      :methods => [:comments_count, :likes_count]
-    )
+    render json: posts
   end
 
   def create
     post = current_user.posts.build(post_params)
     post.save
+    render json: post
   end
 
   def show
     user = User.find(params[:id])
-    posts = user.posts.sort_by(&:created_at)
-    render json: posts.as_json(
-      :include => {:profile => {:only => [:first_name, :last_name]}},
-      :methods => [:comments_count, :likes_count]
-    )
+    posts = user.posts.sort_by(&:created_at).reverse
+    render json: posts
   end
 
   def update
     post = Post.find(params[:id])
     post.update(post_params)
+    render json: post
   end
 
   def destroy
