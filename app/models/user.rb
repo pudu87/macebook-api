@@ -32,12 +32,12 @@ class User < ApplicationRecord
     ", {:id => self.id}]
   end
 
-  # users that have SENT a request
+  # users that have SENT a request (to current_user)
   def pending_friends
     inverse_friends.where(friendships: {accepted: false})
   end
 
-  # users that have RECEIVED a request
+  # users that have RECEIVED a request (from current_user)
   def proposed_friends
     friends.where(friendships: {accepted: false})
   end
@@ -57,5 +57,13 @@ class User < ApplicationRecord
 
   def init_profile
     self.create_profile
+  end
+
+  def as_json(options={})
+    super(
+      :include => {:profile => {
+        :only => [:first_name, :last_name]}},
+      :only => [:id]
+    )
   end
 end
