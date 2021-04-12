@@ -59,6 +59,10 @@ class User < ApplicationRecord
     self.create_profile
   end
 
+  def is_friend?(user)
+    user.confirmed_friends.any?{ |f| self.id == f.id}
+  end
+
   def as_json(options={})
     super(
       :include => {:profile => {

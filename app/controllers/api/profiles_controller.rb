@@ -2,7 +2,9 @@ class Api::ProfilesController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    profile = Profile.find_by_user_id(params[:id])
+    user = User.find(params[:id])
+    profile = current_user.is_friend?(user) || current_user.id == user.id ?
+      user.profile : {}
     render json: profile
   end
 

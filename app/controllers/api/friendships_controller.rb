@@ -18,9 +18,12 @@ class Api::FriendshipsController < ApplicationController
   def show
     user = User.find(params[:id])
     confirmed = user.confirmed_friends
-    pending = user.pending_friends
-    proposed = user.proposed_friends
-    possible = user.possible_friends
+    pending = current_user.id == user.id ?
+      user.pending_friends : []
+    proposed = current_user.id == user.id ?
+      user.proposed_friends : []
+    possible = current_user.id == user.id ?
+      user.possible_friends : []
     render json: {
       :confirmed => confirmed,
       :pending => pending,

@@ -16,7 +16,8 @@ class Api::PostsController < ApplicationController
 
   def show
     user = User.find(params[:id])
-    posts = user.posts.sort_by(&:created_at).reverse
+    posts = current_user.is_friend?(user) || current_user.id == user.id ?
+      user.posts.sort_by(&:created_at).reverse : []
     render json: posts
   end
 
