@@ -1,7 +1,7 @@
 class Profile < ApplicationRecord
-  belongs_to :user
+  include Rails.application.routes.url_helpers
 
-  def as_json(options={})
-    super(:only => [:first_name, :last_name, :birthdate, :location, :sex])
-  end
+  belongs_to :user
+  has_one_attached :avatar
+
 end

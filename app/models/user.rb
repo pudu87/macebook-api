@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
+  include Rails.application.routes.url_helpers
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable,
@@ -63,11 +64,4 @@ class User < ApplicationRecord
     user.confirmed_friends.any?{ |f| self.id == f.id}
   end
 
-  def as_json(options={})
-    super(
-      :include => {:profile => {
-        :only => [:first_name, :last_name]}},
-      :only => [:id]
-    )
-  end
 end

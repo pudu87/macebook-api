@@ -5,26 +5,30 @@ class Api::PostsController < ApplicationController
     posts = (current_user.posts +
       current_user.confirmed_friends.map{ |f| f.posts }.flatten)
       .sort_by(&:created_at).reverse
-    render json: posts
+    render json: posts.map { |post|
+      PostSerializer.new(post).serializable_hash[:data][:attributes]
+    }
   end
 
   def create
     post = current_user.posts.build(post_params)
     post.save
-    render json: post
+    render json: PostSerializer.new(post).serializable_hash[:data][:attributes]
   end
 
   def show
     user = User.find(params[:id])
     posts = current_user.is_friend?(user) || current_user.id == user.id ?
       user.posts.sort_by(&:created_at).reverse : []
-    render json: posts
+    render json: posts.map { |post|
+      PostSerializer.new(post).serializable_hash[:data][:attributes]
+    }
   end
 
   def update
     post = Post.find(params[:id])
     post.update(post_params)
-    render json: post
+    render json: PostSerializer.new(post).serializable_hash[:data][:attributes]
   end
 
   def destroy
@@ -35,7 +39,7 @@ class Api::PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:content)
+    params.require(:post).permit(:content, :photo)
   end
 
 end

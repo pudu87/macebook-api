@@ -1,15 +1,17 @@
 class Api::LikesController < ApplicationController
   before_action :authenticate_user!
 
-  def index
+  def show
     likes = Post.find(params[:id]).likes
-    render json: likes
+    render json: likes.map { |like|
+      LikeSerializer.new(likes).serializable_hash[:data][:attributes]
+    }
   end
 
   def create
     like = current_user.likes.build(like_params)
     like.save
-    render json: like
+    render json: LikeSerializer.new(like).serializable_hash[:data][:attributes]
   end
 
   def destroy
