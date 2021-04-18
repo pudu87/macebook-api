@@ -11,7 +11,8 @@ class Api::FriendshipsController < ApplicationController
     render json: {
       :from => 'possible',
       :to => 'proposed',
-      :data => friend
+      :data => UserSerializer.new(friend, { params: { profile: true }})
+        .serializable_hash[:data][:attributes]
     }
   end
 
@@ -25,10 +26,18 @@ class Api::FriendshipsController < ApplicationController
     possible = current_user.id == user.id ?
       user.possible_friends : []
     render json: {
-      :confirmed => confirmed,
-      :pending => pending,
-      :proposed => proposed,
-      :possible => possible
+      :confirmed => confirmed.map { |friend| 
+        UserSerializer.new(friend, { params: { profile: true }})
+        .serializable_hash[:data][:attributes]},
+      :pending => pending.map { |friend| 
+        UserSerializer.new(friend, { params: { profile: true }})
+        .serializable_hash[:data][:attributes]},
+      :proposed => proposed.map { |friend| 
+        UserSerializer.new(friend, { params: { profile: true }})
+        .serializable_hash[:data][:attributes]},
+      :possible => possible.map { |friend| 
+        UserSerializer.new(friend, { params: { profile: true }})
+        .serializable_hash[:data][:attributes]}
     }
   end
 
@@ -39,7 +48,8 @@ class Api::FriendshipsController < ApplicationController
     render json: {
       :from => 'pending',
       :to => 'confirmed',
-      :data => friend
+      :data => UserSerializer.new(friend, { params: { profile: true }})
+        .serializable_hash[:data][:attributes]
     }
   end
 
@@ -51,7 +61,8 @@ class Api::FriendshipsController < ApplicationController
     render json: {
       :from => 'confirmed',
       :to => 'possible',
-      :data => friend
+      :data => UserSerializer.new(friend, { params: { profile: true }})
+        .serializable_hash[:data][:attributes]
     }
   end
 
