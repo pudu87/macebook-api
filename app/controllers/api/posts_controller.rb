@@ -5,9 +5,12 @@ class Api::PostsController < ApplicationController
     posts = (current_user.posts +
       current_user.confirmed_friends.map{ |f| f.posts }.flatten)
       .sort_by(&:created_at).reverse
-    render json: posts.map { |post|
-      PostSerializer.new(post).serializable_hash[:data][:attributes]
-    }
+    render json: { 
+      current_user_id: current_user.id 
+      }.merge({ 
+        posts: posts.map { |post| PostSerializer.new(post)
+          .serializable_hash[:data][:attributes] }
+      })
   end
 
   def create
