@@ -5,8 +5,8 @@ class ProfileSerializer
   attributes :birthdate, :location, :sex, if: Proc.new { |_, params|
     params && params[:all] == true
   }
-  attribute :avatar do |object|
-    object.avatar.attached? ? url_for(object.avatar) : nil
+  attribute :avatar do |profile|
+    profile.avatar.attached? ? url_for(profile.avatar) : nil
   end
 
   class << self
