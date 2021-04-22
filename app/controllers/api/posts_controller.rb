@@ -30,7 +30,12 @@ class Api::PostsController < ApplicationController
 
   def update
     post = Post.find(params[:id])
-    post.update(post_params)
+    if post_params[:photo] == 'null'
+      post.photo.purge
+      post.update(post_params.except(:photo))
+    else
+      post.update(post_params)
+    end
     render json: PostSerializer.new(post).serializable_hash[:data][:attributes]
   end
 
