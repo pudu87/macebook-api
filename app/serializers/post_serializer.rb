@@ -9,6 +9,9 @@ class PostSerializer
   attribute :profile do |post|
     ProfileSerializer.new(post.profile).serializable_hash[:data][:attributes]
   end
+  attribute :like_id do |post, params|
+    post.like_id(params[:current_user])
+  end
 
   class << self
     delegate :url_for, to: :'Rails.application.routes.url_helpers'

@@ -8,15 +8,20 @@ class Api::PostsController < ApplicationController
     render json: { 
       current_user_id: current_user.id 
       }.merge({ 
-        posts: posts.map { |post| PostSerializer.new(post)
+        posts: posts.map { |post| PostSerializer.new(post, {params: {current_user: current_user}})
           .serializable_hash[:data][:attributes] }
       })
   end
 
   def create
-    post = current_user.posts.build(post_params)
+    if post_params[:photo] == 'null'
+      post = current_user.posts.build(post_params.except(:photo))
+    else
+      post = current_user.posts.build(post_params)
+    end
     post.save
-    render json: PostSerializer.new(post).serializable_hash[:data][:attributes]
+    render json: PostSerializer.new(post, {params: {current_user: current_user}})
+      .serializable_hash[:data][:attributes]
   end
 
   def show
@@ -24,7 +29,8 @@ class Api::PostsController < ApplicationController
     posts = current_user.is_friend?(user) || current_user.id == user.id ?
       user.posts.sort_by(&:created_at).reverse : []
     render json: posts.map { |post|
-      PostSerializer.new(post).serializable_hash[:data][:attributes]
+      PostSerializer.new(post, {params: {current_user: current_user}})
+      .serializable_hash[:data][:attributes]
     }
   end
 
@@ -36,7 +42,8 @@ class Api::PostsController < ApplicationController
     else
       post.update(post_params)
     end
-    render json: PostSerializer.new(post).serializable_hash[:data][:attributes]
+    render json: PostSerializer.new(post, {params: {current_user: current_user}})
+      .serializable_hash[:data][:attributes]
   end
 
   def destroy
