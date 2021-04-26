@@ -45,28 +45,34 @@ posts_list.each do |u,c|
 end
 
 comments_list = [
-  [3, 1, 'I was there. Rocky I, Rocky II, Rocky III!'],
-  [2, 1, 'We could use you in the Croatian team, Rocky.'],
-  [1, 1, "I retired already, Ivan. But let me know if they need a trainer."],
-  [3, 2, 'Well done, Ivan.'],
-  [3, 2, 'One day we will win that cup with Haiti.']
+  [3, 1, 'Post', 'I was there. Rocky I, Rocky II, Rocky III!'],
+  [2, 1, 'Post', 'We could use you in the Croatian team, Rocky.'],
+  [1, 1, 'Post', "I retired already, Ivan. But let me know if they need a trainer."],
+  [3, 2, 'Post', 'Well done, Ivan.'],
+  [3, 2, 'Post', 'One day we will win that cup with Haiti.']
 ]
 
-comments_list.each do |u,pt,c|
-  Comment.find_or_create_by(user_id: u, post_id: pt, content: c)
+comments_list.each do |u,id,t,c|
+  Comment.find_or_create_by(user_id: u, commentable_id: id, commentable_type: t, content: c)
 end
 
+Comment.find_or_create_by(user_id: 1, commentable_id: 5, commentable_type:'Comment', content: 'Belgium-Haiti would be a nice final.')
+
 likes_list = [
-  [1, 1],
-  [1, 2],
-  [1, 3],
-  [2, 1],
-  [2, 3],
-  [5, 1]
+  [1, 1, 'Post'],
+  [1, 2, 'Post'],
+  [1, 3, 'Post'],
+  [2, 1, 'Post'],
+  [2, 3, 'Post'],
+  [5, 1, 'Post'],
+  [1, 1, 'Comment'],
+  [2, 1, 'Comment'],
+  [2, 3, 'Comment'],
+  [3, 6, 'Comment']
 ]
 
-likes_list.each do |u,pt|
-  Like.find_or_create_by(user_id: u, post_id: pt)
+likes_list.each do |u,id, t|
+  Like.find_or_create_by(user_id: u, likeable_id: id, likeable_type: t)
 end
 
 profiles_list = [
