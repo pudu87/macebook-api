@@ -11,7 +11,12 @@ class Api::ProfilesController < ApplicationController
 
   def update
     profile = Profile.find_by_user_id(params[:id])
-    profile.update(profile_params)
+    if profile_params[:avatar] == 'null'
+      profile.avatar.purge
+      profile.update(profile_params.except(:avatar))
+    else
+      profile.update(profile_params)
+    end
     render json: ProfileSerializer.new(profile, { params: { all: true }})
                                   .serializable_hash[:data][:attributes]
   end
