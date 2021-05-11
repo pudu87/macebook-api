@@ -15,7 +15,7 @@ class Api::LikesController < ApplicationController
     end
     likes = parent.likes.sort_by(&:created_at)
     render json: likes.map { |like|
-      LikeSerializer.new(likes).serializable_hash[:data][:attributes]
+      LikeSerializer.new(like).serializable_hash[:data][:attributes]
     }
   end
 
