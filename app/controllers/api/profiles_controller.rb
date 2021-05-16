@@ -4,9 +4,13 @@ class Api::ProfilesController < ApplicationController
   def show
     user = User.find(params[:id])
     profile = current_user.is_friend?(user) || current_user.id == user.id ?
-      user.profile : {}
-    render json: ProfileSerializer.new(profile, { params: { all: true }})
-                                  .serializable_hash[:data][:attributes]
+      user.profile : false
+    if profile
+      render json: ProfileSerializer.new(profile, { params: { all: true }})
+                                    .serializable_hash[:data][:attributes]
+    else
+      render json: {}
+    end
   end
 
   def update
