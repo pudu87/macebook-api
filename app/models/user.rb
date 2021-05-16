@@ -11,7 +11,7 @@ class User < ApplicationRecord
     :jwt_authenticatable,
     jwt_revocation_strategy: self
 
-  after_create :init_profile
+  after_create :init_profile, :add_initial_friends
 
   has_many :friendships
   has_many :friends, through: :friendships
@@ -58,6 +58,12 @@ class User < ApplicationRecord
 
   def init_profile
     self.create_profile
+  end
+
+  def add_initial_friends
+    (1..6).each do |f|
+      Friendship.create(user_id: f, friend_id: self.id, accepted: false)
+    end
   end
 
   def is_friend?(user)

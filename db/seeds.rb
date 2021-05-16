@@ -78,10 +78,10 @@ end
 profiles_list = [
   [1, 'Rocky', 'Peeters', Date.parse('18-08-1979'), 'M', 'Herentals'],
   [2, 'Ivan', 'Perisic', Date.parse('02-02-1989'), 'M', 'Munchen'],
-  [3, 'Wagneau', 'Eloi', '', '', ''],
-  [4, 'Damir', 'Mirvic', '', '', ''],
-  [5, 'Mama', 'Dissa', '', '', ''],
-  [6, 'Jurgen', 'Sierens', '', '', '']
+  [3, 'Wagneau', 'Eloi', Date.parse('11-09-1973'), 'M', 'Port-au-Prince'],
+  [4, 'Damir', 'Mirvic', Date.parse('30-11-1982'), 'M', 'Gent'],
+  [5, 'Mama', 'Dissa', Date.parse('18-05-1979'), 'M', 'Bamako'],
+  [6, 'Jurgen', 'Sierens', Date.parse('04-10-1976'), 'M', 'Roeselare']
 ]
 
 profiles_list.each do |u,fn,ln,bd,s,l|
